@@ -1,18 +1,56 @@
 # 🛡️ Security Awareness Quiz Generator
 This project automates the generation of high-quality, compliance-driven security awareness quiz questions using the Gemini API. It processes internal policy documents (PDFs/TXTs) and generates content for general and advanced security topics, outputting a single, structured CSV ready for any Learning Management System (LMS).
 
-# ✨ Key Features
-## Policy-Driven Accuracy:
-Extracts mandatory rules directly from policy files in the policies/ folder.
+# 🛠 Quiz Generation Setup (Node.js + TypeScript)
 
-## Structured Output: 
-Generates a strict CSV format with audited columns (e.g., Policy Section / Reference) using the Gemini API's system instructions.
+I created a Node.js + TypeScript setup to generate structured quiz questions. The process works as follows:
 
-## Modular Pipeline: 
-Separates logic into General, Advanced, and Policy-Specific generation phases.
+## Input
 
-## Robust & Scalable: 
-Uses gemini-2.5-pro and includes retry logic for stable, high-volume question generation.
+/policies folder contains PDF or text versions of internal policies.
+
+These serve as the source for Policy-Specific questions.
+
+PDFs are parsed using pdf2json to extract text content for the prompts.
+
+## Prompt Templates
+
+There are three types of prompts, all using a common CSV template:
+
+### Template	Focus	Policy Alignment
+🧱 Policy-Specific	Questions directly from internal policies	✅ Y
+🌐 General Security	Awareness topics like phishing, passwords, safe browsing	❌ N
+⚙️ Advanced Topics	Technical security: secure coding, OWASP, cryptography	❌ N
+
+Important: Even though the prompts differ, they all use the same CSV format, ensuring consistent output.
+
+## Generation
+
+Each prompt produces exactly 5 high-quality questions per run.
+
+Questions are clear, self-contained, and professional.
+
+Policy-Specific questions include direct references and explanations from the policy text.
+
+Question types are diverse: Scenario, Multiple Choice, True/False, Spot the Mistake, Mini-Story, Ordering, Ethical Dilemma, Hotspot/Image-Based, etc.
+
+## Output
+
+Separate CSV files are generated for each template:
+
+Policy-Specific → output/[POLICY_NAME].csv
+
+General Security → output/general.csv
+
+Advanced Topics → output/advanced.csv
+
+All files can be merged into a final CSV: output/final_generated_questions.csv for easy review.
+
+## Consistency & Scalability
+
+All templates follow the same CSV schema, ensuring uniformity.
+
+The setup allows the team to automate quiz generation, maintain structured outputs, and scale easily across multiple policies or topics.
 
 # 🚀 Getting Started
 
