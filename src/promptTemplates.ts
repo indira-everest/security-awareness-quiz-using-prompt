@@ -66,7 +66,7 @@ ${policyText}
 ### 🎯 OBJECTIVES
 - **Strict Compliance:** All 5 questions must draw their content, correct answer, and explanation **EXCLUSIVELY** from the 'POLICY TEXT' above.
 - **Policy Alignment:** The "Policy Alignment (Y/N)" column **MUST** be set to **'Y'** for all 5 questions.
-- **Focus:** Mix question types across Scenario, True/False, and Multiple Choice.
+- **Focus:** **At least 4 out of 5 questions (80%) MUST be engaging Scenario-Based, Mini-Story, or "What If..." type questions.** Only one can be a simple True/False or Multiple Choice.
 - **Avoid:** Do not introduce external concepts (like OWASP Top 10 or general phishing) that are not mentioned in the policy text.
 
 ${CSV_COLUMNS_AND_FORMAT}
@@ -84,6 +84,7 @@ Your task is to generate **exactly 5 unique, high-quality quiz questions** focus
 ### 🎯 OBJECTIVES
 - **Topic Focus:** Phishing, Social Engineering tactics, creating strong passwords, and general safe browsing habits.
 - **Policy Alignment:** The "Policy Alignment (Y/N)" column **MUST** be set to **'N'** for all 5 questions.
+- **Focus:** **At least 3 out of 5 questions (60%) MUST be Scenario-Based or Mini-Story** to showcase practical security awareness in action.
 - **Context:** Do NOT reference any internal policy documents, numbers, or specific company rules.
 
 ${CSV_COLUMNS_AND_FORMAT}
@@ -101,7 +102,48 @@ Your task is to generate **exactly 5 unique, high-quality quiz questions** for t
 ### 🎯 OBJECTIVES
 - **Topic Focus:** Concepts like OWASP Top 10 (Injection, Broken Access Control), Secure Coding, Secrets Management, and Cryptography Basics.
 - **Policy Alignment:** The "Policy Alignment (Y/N)" column **MUST** be set to **'N'** for all 5 questions.
+- **Focus:** **At least 4 out of 5 questions (80%) MUST use a Scenario-Based or "Spot the Mistake" format** involving a code snippet or configuration file to make the technical content engaging.
 - **Content:** Include one 'Spot the Mistake' question that contains a small, relevant code snippet or configuration error.
+
+${CSV_COLUMNS_AND_FORMAT}
+`;
+}
+
+// ----------------------------------------------------------------------
+// TEMPLATE 4: Narrative/Scenario-Driven Policy Generator
+// ----------------------------------------------------------------------
+export function getNarrativeSpecificPrompt(
+  policyText: string,
+  policyName: string
+): string {
+  // Define your organization's key employees and roles for consistent use in scenarios
+  const ORG_CHARACTERS = `
+    - **Craig (CEO)**: Focus on executive-level decisions, high-stakes communication, or sensitive data access.
+    - **Ranga (CTO)**: Focus on technical architecture, system design, or engineering compliance.
+    - **Jasmine (Security Lead)**: Focus on policy enforcement, security incidents, or guidance.
+    - **Chris (AI Lead)**: Focus on data handling for ML models, ethical AI use, or new technology risk.
+    - **Ashok, Rav, Sudhakar, Shruthi (Project Managers)**: Focus on project timelines, resource access, vendor management, or team adherence to rules.
+    - **General roles to use**: Sales Rep, Developer, HR Specialist, Intern.
+  `;
+
+  return `
+You are a master storyteller and expert in corporate compliance training.
+Your task is to generate **exactly 5 unique, highly engaging quiz questions** that test **MANDATORY RULES** from the policy provided below.
+
+---
+### 📜 POLICY CONTEXT
+**Policy Name:** ${policyName}
+**Policy Text:**
+${policyText}
+---
+
+### 🎯 OBJECTIVES
+- **Strict Compliance:** All 5 questions must draw their content, correct answer, and explanation **EXCLUSIVELY** from the 'POLICY TEXT' above.
+- **Policy Alignment:** The "Policy Alignment (Y/N)" column **MUST** be set to **'Y'** for all 5 questions.
+- **Focus:** **All 5 questions (100%) MUST be Scenario-Based, Mini-Story, or "What If..." type to maximize engagement.**
+- **Character Integration:** The questions **MUST** weave in at least one of the following organizational characters into the scenario to make it relatable:
+  ${ORG_CHARACTERS}
+- **Tone:** The scenarios should be realistic, compelling, and clearly show a compliance conflict or decision point.
 
 ${CSV_COLUMNS_AND_FORMAT}
 `;

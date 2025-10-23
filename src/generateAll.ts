@@ -10,6 +10,7 @@ import {
   getPolicySpecificPrompt,
   getGeneralSecurityPrompt,
   getAdvancedTopicsPrompt,
+  getNarrativeSpecificPrompt // <-- Import the new narrative prompt template
 } from "./promptTemplates.js";
 
 const inputDir = path.resolve("policies");
@@ -24,7 +25,7 @@ async function main(): Promise<void> {
   let combinedCsv = "";
   let headerAdded = false;
 
-  // 1️⃣ General Security
+  // 1️⃣ General Security (Scenario-Focused)
   console.log("🌐 Generating General Security section...");
   const generalPrompt = getGeneralSecurityPrompt();
   const generalCsv = await generateQuestions(
@@ -34,16 +35,17 @@ async function main(): Promise<void> {
   combinedCsv += generalCsv + "\n";
   headerAdded = true;
 
-  // 2️⃣ Advanced Topics
+  // 2️⃣ Advanced Topics (Scenario/Mistake-Focused)
   console.log("💻 Generating Advanced Topics section...");
   const advancedPrompt = getAdvancedTopicsPrompt();
   const advancedCsv = await generateQuestions(
     advancedPrompt,
     path.join(outputDir, "advanced.csv")
   );
+  // Remove header from subsequent sections
   combinedCsv += advancedCsv.split("\n").slice(1).join("\n") + "\n";
 
-  // 3️⃣ Policy PDFs
+  // 3️⃣ Policy PDFs (Now using the NARRATIVE/CHARACTER-DRIVEN template)
   const policyFiles = getPolicyFiles(inputDir);
 
   for (const file of policyFiles) {
@@ -52,14 +54,16 @@ async function main(): Promise<void> {
     const policyName = file.replace(/\.(pdf|txt)$/i, "");
 
     console.log(
-      `🏛️ Generating Policy-Specific questions for: ${policyName}...`
+      `🏛️ Generating NARRATIVE Policy-Specific questions for: ${policyName}...`
     );
-    const policyPrompt = getPolicySpecificPrompt(policyText, policyName);
+    // ⬇️ SWITCHED TO USING THE NARRATIVE TEMPLATE ⬇️
+    const policyPrompt = getNarrativeSpecificPrompt(policyText, policyName);
     const policyCsv = await generateQuestions(
       policyPrompt,
-      path.join(outputDir, `${policyName}.csv`)
+      path.join(outputDir, `${policyName}_Narrative.csv`) // Changed filename for distinction
     );
 
+    // Remove header from subsequent sections
     combinedCsv += policyCsv.split("\n").slice(1).join("\n") + "\n";
   }
 
