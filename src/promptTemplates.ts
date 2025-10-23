@@ -66,7 +66,7 @@ ${policyText}
 ### 🎯 OBJECTIVES
 - **Strict Compliance:** All 5 questions must draw their content, correct answer, and explanation **EXCLUSIVELY** from the 'POLICY TEXT' above.
 - **Policy Alignment:** The "Policy Alignment (Y/N)" column **MUST** be set to **'Y'** for all 5 questions.
-- **Focus:** **At least 4 out of 5 questions (80%) MUST be engaging Scenario-Based, Mini-Story, or "What If..." type questions.** Only one can be a simple True/False or Multiple Choice.
+- **Focus:** **At least 2 or 3 out of 5 questions (approximately 50%) MUST be engaging Scenario-Based, Mini-Story, or "What If..." type questions.**
 - **Avoid:** Do not introduce external concepts (like OWASP Top 10 or general phishing) that are not mentioned in the policy text.
 
 ${CSV_COLUMNS_AND_FORMAT}
@@ -84,7 +84,7 @@ Your task is to generate **exactly 5 unique, high-quality quiz questions** focus
 ### 🎯 OBJECTIVES
 - **Topic Focus:** Phishing, Social Engineering tactics, creating strong passwords, and general safe browsing habits.
 - **Policy Alignment:** The "Policy Alignment (Y/N)" column **MUST** be set to **'N'** for all 5 questions.
-- **Focus:** **At least 3 out of 5 questions (60%) MUST be Scenario-Based or Mini-Story** to showcase practical security awareness in action.
+- **Focus:** **At least 2 or 3 out of 5 questions (approximately 50%) MUST be Scenario-Based or Mini-Story** to showcase practical security awareness in action.
 - **Context:** Do NOT reference any internal policy documents, numbers, or specific company rules.
 
 ${CSV_COLUMNS_AND_FORMAT}
@@ -102,7 +102,7 @@ Your task is to generate **exactly 5 unique, high-quality quiz questions** for t
 ### 🎯 OBJECTIVES
 - **Topic Focus:** Concepts like OWASP Top 10 (Injection, Broken Access Control), Secure Coding, Secrets Management, and Cryptography Basics.
 - **Policy Alignment:** The "Policy Alignment (Y/N)" column **MUST** be set to **'N'** for all 5 questions.
-- **Focus:** **At least 4 out of 5 questions (80%) MUST use a Scenario-Based or "Spot the Mistake" format** involving a code snippet or configuration file to make the technical content engaging.
+- **Focus:** **At least 2 or 3 out of 5 questions (approximately 50%) MUST use a Scenario-Based or "Spot the Mistake" format** involving a code snippet or configuration file to make the technical content engaging.
 - **Content:** Include one 'Spot the Mistake' question that contains a small, relevant code snippet or configuration error.
 
 ${CSV_COLUMNS_AND_FORMAT}
