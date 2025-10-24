@@ -9,7 +9,7 @@ export async function generateQuestions(
   prompt: string,
   outputPath: string
 ): Promise<string> {
-  console.log(`🤖 Generating questions for: ${outputPath} using ${MODEL_NAME}`);
+  console.log(`Generating questions for: ${outputPath} using ${MODEL_NAME}`);
 
   try {
     const response = await ai.models.generateContent({
@@ -29,11 +29,9 @@ export async function generateQuestions(
     }
 
     fs.writeFileSync(outputPath, content, "utf8");
-    console.log(`✅ Saved partial output: ${outputPath}`);
-
     return content;
   } catch (error) {
-    console.error(`❌ Error generating questions for ${outputPath}:`, error);
+    console.error(`Error generating questions for ${outputPath}:`, error);
     throw error;
   }
 }

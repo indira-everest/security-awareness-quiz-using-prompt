@@ -7,64 +7,89 @@ import {
 } from "./fileUtils.js";
 import { generateQuestions } from "./generateQuestions.js";
 import {
-  getPolicySpecificPrompt,
   getGeneralSecurityPrompt,
   getAdvancedTopicsPrompt,
+  getNarrativeSpecificPrompt,
 } from "./promptTemplates.js";
+import { withRetry } from "./retryUtils.js";
 
 const inputDir = path.resolve("policies");
 const outputDir = path.resolve("output");
-const finalCsv = path.join(outputDir, "final_generated_questions.csv");
+const finalCsvPath = path.join(outputDir, "final_generated_questions.csv");
 
 ensureDir(outputDir);
 
-async function main(): Promise<void> {
-  console.log("🚀 Starting quiz generation pipeline...");
+/**
+ * Generate quiz questions for a single section (e.g., general, advanced)
+ */
+async function generateSection(
+  label: string,
+  promptFn: () => string,
+  outputFile: string,
+  skipHeader = false
+) {
+  const csv = await withRetry(generateQuestions, [
+    promptFn(),
+    path.join(outputDir, outputFile),
+  ]);
 
-  let combinedCsv = "";
-  let headerAdded = false;
+  console.log(`${label} section done → ${outputFile}`);
+  return skipHeader ? csv.split("\n").slice(1).join("\n") : csv;
+}
 
-  // 1️⃣ General Security
-  console.log("🌐 Generating General Security section...");
-  const generalPrompt = getGeneralSecurityPrompt();
-  const generalCsv = await generateQuestions(
-    generalPrompt,
-    path.join(outputDir, "general.csv")
-  );
-  combinedCsv += generalCsv + "\n";
-  headerAdded = true;
-
-  // 2️⃣ Advanced Topics
-  console.log("💻 Generating Advanced Topics section...");
-  const advancedPrompt = getAdvancedTopicsPrompt();
-  const advancedCsv = await generateQuestions(
-    advancedPrompt,
-    path.join(outputDir, "advanced.csv")
-  );
-  combinedCsv += advancedCsv.split("\n").slice(1).join("\n") + "\n";
-
-  // 3️⃣ Policy PDFs
+/**
+ * Generate quiz questions for each policy file (PDF or TXT)
+ */
+async function generatePolicySections() {
   const policyFiles = getPolicyFiles(inputDir);
+  let combined = "";
 
   for (const file of policyFiles) {
     const policyPath = path.join(inputDir, file);
-    const policyText = await readFileContent(policyPath);
     const policyName = file.replace(/\.(pdf|txt)$/i, "");
 
-    console.log(
-      `🏛️ Generating Policy-Specific questions for: ${policyName}...`
-    );
-    const policyPrompt = getPolicySpecificPrompt(policyText, policyName);
-    const policyCsv = await generateQuestions(
+    console.log(`Processing policy: ${policyName}`);
+    const policyText = await readFileContent(policyPath);
+    const policyPrompt = getNarrativeSpecificPrompt(policyText, policyName);
+    const csv = await withRetry(generateQuestions, [
       policyPrompt,
-      path.join(outputDir, `${policyName}.csv`)
-    );
+      path.join(outputDir, `${policyName}_Narrative.csv`),
+    ]);
 
-    combinedCsv += policyCsv.split("\n").slice(1).join("\n") + "\n";
+    // skip header lines to avoid duplicates
+    combined += csv.split("\n").slice(1).join("\n") + "\n";
   }
 
-  writeFile(finalCsv, combinedCsv);
-  console.log(`🎉 All sections generated → ${finalCsv}`);
+  return combined;
 }
 
-main().catch(console.error);
+/**
+ * Main generation pipeline
+ */
+async function main() {
+  console.log("🚀 Starting quiz generation pipeline...\n");
+
+  const generalCsv = await generateSection(
+    "General Security",
+    getGeneralSecurityPrompt,
+    "general.csv"
+  );
+
+  const advancedCsv = await generateSection(
+    "Advanced Topics",
+    getAdvancedTopicsPrompt,
+    "advanced.csv",
+    true
+  );
+
+  const policyCsv = await generatePolicySections();
+
+  const finalCsv = [generalCsv, advancedCsv, policyCsv].join("\n");
+  writeFile(finalCsvPath, finalCsv);
+
+  console.log(`\n All sections generated successfully → ${finalCsvPath}\n`);
+}
+
+main().catch((err) => {
+  console.error("Quiz generation failed:", err);
+});

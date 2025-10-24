@@ -15,16 +15,30 @@ export async function readFileContent(filePath: string): Promise<string> {
   if (ext === ".pdf") {
     return new Promise((resolve, reject) => {
       const pdfParser = new PDFParser();
+
+      pdfParser.on("pdfParser_dataError", (errData) => {
+        reject(errData.parserError);
+      });
+
       pdfParser.on("pdfParser_dataReady", (pdfData) => {
-        const pages = pdfData.Pages;
-        const text = pages
-          .map((page) =>
-            page.Texts.map((t) =>
-              decodeURIComponent(t.R.map((r) => r.T).join(""))
-            ).join(" ")
-          )
-          .join("\n\n");
-        resolve(text);
+        try {
+          const pages = pdfData.Pages;
+          const text = pages
+            .map((page) =>
+              page.Texts.map((t) => {
+                const raw = t.R.map((r) => r.T).join("");
+                try {
+                  return decodeURIComponent(raw);
+                } catch {
+                  return raw;
+                }
+              }).join(" ")
+            )
+            .join("\n\n");
+          resolve(text);
+        } catch (err) {
+          reject(err);
+        }
       });
 
       pdfParser.loadPDF(filePath);
