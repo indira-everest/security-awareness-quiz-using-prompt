@@ -11,6 +11,7 @@ import {
   getAdvancedTopicsPrompt,
   getNarrativeSpecificPrompt,
 } from "./promptTemplates.js";
+import { withRetry } from "./retryUtils.js";
 
 const inputDir = path.resolve("policies");
 const outputDir = path.resolve("output");
@@ -27,10 +28,11 @@ async function generateSection(
   outputFile: string,
   skipHeader = false
 ) {
-  const csv = await generateQuestions(
+  const csv = await withRetry(generateQuestions, [
     promptFn(),
-    path.join(outputDir, outputFile)
-  );
+    path.join(outputDir, outputFile),
+  ]);
+
   console.log(`${label} section done → ${outputFile}`);
   return skipHeader ? csv.split("\n").slice(1).join("\n") : csv;
 }
@@ -49,11 +51,10 @@ async function generatePolicySections() {
     console.log(`Processing policy: ${policyName}`);
     const policyText = await readFileContent(policyPath);
     const policyPrompt = getNarrativeSpecificPrompt(policyText, policyName);
-
-    const csv = await generateQuestions(
+    const csv = await withRetry(generateQuestions, [
       policyPrompt,
-      path.join(outputDir, `${policyName}_Narrative.csv`)
-    );
+      path.join(outputDir, `${policyName}_Narrative.csv`),
+    ]);
 
     // skip header lines to avoid duplicates
     combined += csv.split("\n").slice(1).join("\n") + "\n";
