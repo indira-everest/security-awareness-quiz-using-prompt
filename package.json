@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node src/generateAll.js",
     "generate": "npx tsx src/generateAll.ts",
+    "clean": "rm -rf output/*",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -29,6 +30,7 @@
   },
   "devDependencies": {
     "@types/node": "^24.8.1",
+    "pdf-parse": "^2.2.2",
     "tsx": "^4.19.1",
     "typescript": "^5.9.3"
   }

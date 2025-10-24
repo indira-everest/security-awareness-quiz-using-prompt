@@ -34,7 +34,6 @@ Distribute questions across the following types:
 - Keep all text quoted properly for valid CSV parsing.
 - Each question must have its own detailed "Prompt Used" field.
 `;
-
 // Define organizational characters for reuse
 const ORG_CHARACTERS = `
 - **Craig (CEO)**: Executive decisions, high-stakes communication.
@@ -44,15 +43,11 @@ const ORG_CHARACTERS = `
 - **Ashok, Rav, Sudhakar, Shruthi (Project Managers)**: Project timelines, resource access, team adherence.
 - **General roles to use**: Sales Rep, Developer, HR Specialist, Intern.
 `;
-
 // ----------------------------------------------------------------------
 // TEMPLATE 1: Single Policy Question Generator (New Requirement)
 // ----------------------------------------------------------------------
-export function getSinglePolicyQuestionPrompt(
-  policyText: string,
-  policyName: string
-): string {
-  return `
+export function getSinglePolicyQuestionPrompt(policyText, policyName) {
+    return `
 You are a corporate compliance expert and a master storyteller for "Everest".
 Your task is to generate **exactly 1 unique, high-quality quiz question** that tests a **MANDATORY RULE** from the policy provided below.
 
@@ -75,12 +70,11 @@ ${policyText}
 ${CSV_COLUMNS_AND_FORMAT}
 `;
 }
-
 // ----------------------------------------------------------------------
 // TEMPLATE 2: General Security Generator (4 Questions)
 // ----------------------------------------------------------------------
-export function getGeneralSecurityPrompt(): string {
-  return `
+export function getGeneralSecurityPrompt() {
+    return `
 You are a cybersecurity training expert for "Everest".
 Your task is to generate **exactly 4 unique, high-quality quiz questions** focused **EXCLUSIVELY** on universal security awareness topics.
 
@@ -97,12 +91,11 @@ Your task is to generate **exactly 4 unique, high-quality quiz questions** focus
 ${CSV_COLUMNS_AND_FORMAT}
 `;
 }
-
 // ----------------------------------------------------------------------
 // TEMPLATE 3: Advanced Topics Generator (3 Questions)
 // ----------------------------------------------------------------------
-export function getAdvancedTopicsPrompt(): string {
-  return `
+export function getAdvancedTopicsPrompt() {
+    return `
 You are an expert security professional for "Everest".
 Your task is to generate **exactly 3 unique, high-quality quiz questions** for technical employees, focused on **Advanced Security and Development Topics**.
 
@@ -118,13 +111,10 @@ Your task is to generate **exactly 3 unique, high-quality quiz questions** for t
 ${CSV_COLUMNS_AND_FORMAT}
 `;
 }
-
 // ----------------------------------------------------------------------
 // TEMPLATE 4: (DEPRECATED/REPLACED by getSinglePolicyQuestionPrompt)
 // ----------------------------------------------------------------------
-export function getNarrativeSpecificPrompt(
-  policyText: string,
-  policyName: string
-): string {
-  return getSinglePolicyQuestionPrompt(policyText, policyName); // Directs to the new, more specific prompt
+export function getNarrativeSpecificPrompt(policyText, policyName) {
+    return getSinglePolicyQuestionPrompt(policyText, policyName); // Directs to the new, more specific prompt
 }
+//# sourceMappingURL=promptTemplates.js.map

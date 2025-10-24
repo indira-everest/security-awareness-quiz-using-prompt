@@ -7,7 +7,6 @@ import {
 } from "./fileUtils.js";
 import { generateQuestions } from "./generateQuestions.js";
 import {
-  getPolicySpecificPrompt,
   getGeneralSecurityPrompt,
   getAdvancedTopicsPrompt,
   getNarrativeSpecificPrompt // <-- Import the new narrative prompt template
