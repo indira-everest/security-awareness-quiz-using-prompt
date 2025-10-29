@@ -4,8 +4,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "node src/generateAll.js",
-    "generate": "npx tsx src/generateAll.ts",
+    "start": "node src/main.js",
+    "generate": "npx tsx src/main.ts",
     "clean": "rm -rf output/*",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -26,10 +26,12 @@
     "@google/genai": "^1.25.0",
     "dotenv": "^17.2.3",
     "openai": "^6.4.0",
+    "papaparse": "^5.5.3",
     "pdf2json": "^4.0.0"
   },
   "devDependencies": {
     "@types/node": "^24.8.1",
+    "@types/papaparse": "^5.3.16",
     "pdf-parse": "^2.2.2",
     "tsx": "^4.19.1",
     "typescript": "^5.9.3"

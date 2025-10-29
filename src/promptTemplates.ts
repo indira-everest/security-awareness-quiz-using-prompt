@@ -41,7 +41,7 @@ const ORG_CHARACTERS = `
 - **Ranga (CTO)**: Technical architecture, system design.
 - **Jasmine (Security Lead)**: Policy enforcement, incident guidance.
 - **Chris (AI Lead)**: Data handling for ML models, new technology risk.
-- **Ashok, Rav, Sudhakar, Shruthi (Project Managers)**: Project timelines, resource access, team adherence.
+- **Ashok, Rav, Sudhakar, Shruthi, Tom, Bruce (Project Managers)**: Project timelines, resource access, team adherence.
 - **General roles to use**: Sales Rep, Developer, HR Specialist, Intern.
 `;
 
@@ -126,5 +126,5 @@ export function getNarrativeSpecificPrompt(
   policyText: string,
   policyName: string
 ): string {
-  return getSinglePolicyQuestionPrompt(policyText, policyName); // Directs to the new, more specific prompt
+  return getSinglePolicyQuestionPrompt(policyText, policyName);
 }

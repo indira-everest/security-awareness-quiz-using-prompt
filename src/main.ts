@@ -4,14 +4,15 @@ import {
   readFileContent,
   writeFile,
   getPolicyFiles,
-} from "./fileUtils.js";
-import { generateQuestions } from "./generateQuestions.js";
+} from "./utils/fileUtils.js";
+import { generateQuestions } from "./utils/generateQuestions.js";
 import {
   getGeneralSecurityPrompt,
   getAdvancedTopicsPrompt,
   getNarrativeSpecificPrompt,
 } from "./promptTemplates.js";
-import { withRetry } from "./retryUtils.js";
+import { withRetry } from "./utils/retryUtils.js";
+import { writeGiftFile } from "./utils/convertCsvToGiftUtils.js";
 
 const inputDir = path.resolve("policies");
 const outputDir = path.resolve("output");
@@ -86,6 +87,7 @@ async function main() {
 
   const finalCsv = [generalCsv, advancedCsv, policyCsv].join("\n");
   writeFile(finalCsvPath, finalCsv);
+  writeGiftFile(finalCsvPath, outputDir);
 
   console.log(`\n All sections generated successfully → ${finalCsvPath}\n`);
 }
