@@ -3,7 +3,7 @@
  */
 
 import fs from "fs";
-import { ai, MODEL_NAME } from "./config.js";
+import { ai, MODEL_NAME } from "../config.js";
 
 export async function generateQuestions(
   prompt: string,
@@ -35,26 +35,3 @@ export async function generateQuestions(
     throw error;
   }
 }
-
-/**
- * Calls OpenAI and returns the generated CSV text.
- */
-
-// import { openai } from "./config.js";
-// import fs from "fs";
-
-// export async function generateQuestions(prompt: string, outputPath: string): Promise<string> {
-//   console.log(`🤖 Generating questions for: ${outputPath}`);
-
-//   const response = await openai.chat.completions.create({
-//     model: "gpt-3.5-turbo",
-//     messages: [{ role: "user", content: prompt }],
-//     temperature: 0.7,
-//   });
-
-//   const content = response.choices?.[0]?.message?.content?.trim() || "";
-//   fs.writeFileSync(outputPath, content, "utf8");
-//   console.log(`✅ Saved partial output: ${outputPath}`);
-
-//   return content;
-// }

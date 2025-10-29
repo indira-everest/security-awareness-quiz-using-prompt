@@ -4,8 +4,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "node src/generateAll.js",
-    "generate": "npx tsx src/generateAll.ts",
+    "start": "node src/main.js",
+    "generate": "npx tsx src/main.ts",
     "clean": "rm -rf output/*",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
