@@ -4,6 +4,7 @@ import {
   readFileContent,
   writeFile,
   getPolicyFiles,
+  writeGiftFile,
 } from "./fileUtils.js";
 import { generateQuestions } from "./generateQuestions.js";
 import {
@@ -86,6 +87,7 @@ async function main() {
 
   const finalCsv = [generalCsv, advancedCsv, policyCsv].join("\n");
   writeFile(finalCsvPath, finalCsv);
+  writeGiftFile(finalCsvPath, outputDir);
 
   console.log(`\n All sections generated successfully → ${finalCsvPath}\n`);
 }
