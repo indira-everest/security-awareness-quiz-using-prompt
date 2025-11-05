@@ -10,17 +10,7 @@
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/indira-everest/security-awareness-quiz-using-prompt.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/indira-everest/security-awareness-quiz-using-prompt/issues"
-  },
-  "homepage": "https://github.com/indira-everest/security-awareness-quiz-using-prompt#readme",
+    "license": "ISC",
   "description": "",
   "dependencies": {
     "@google/genai": "^1.25.0",
