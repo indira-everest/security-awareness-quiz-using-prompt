@@ -1,79 +1,85 @@
-# 🛡️ Security Awareness Quiz Generator
-This project automates the generation of high-quality, compliance-driven security awareness quiz questions using the Gemini API. It processes internal policy documents (PDFs/TXTs) and generates content for general and advanced security topics, outputting a single, structured CSV ready for any Learning Management System (LMS).
+# 🛡️ Security Training Uplift: Quiz Generator
 
-# 🛠 Quiz Generation Setup (Node.js + TypeScript)
+---
 
-I created a Node.js + TypeScript setup to generate structured quiz questions. The process works as follows:
+## 🎯 Project Overview
 
-## Input
+This project uses the **Google Gemini API** to automatically generate high-quality, compliance-driven security awareness quiz questions. It processes internal policy documents (PDFs/TXTs) and generates content for policy-specific, general, and advanced security topics.
 
-/policies folder contains PDF or text versions of internal policies.
+The output is structured for immediate use: a single, merged **CSV** for evaluation and reporting, and a **GIFT** file (as a `.txt` extension for Moodle) for direct import into your Learning Management System (LMS).
 
-These serve as the source for Policy-Specific questions.
+---
 
-PDFs are parsed using pdf2json to extract text content for the prompts.
+## ✨ Key Features
 
-## Prompt Templates
+* **Policy-Driven:** Generates questions with direct citations and explanations from internal policies.
+* **Structured Output:** Consistent CSV schema across all question types for easy merging and analysis.
+* **LMS Ready:** Final output is converted to the **Moodle GIFT format** (exported as a `.txt` file).
+* **Clean Organization:** Output is separated into dedicated `csv/` and `gift/` directories.
 
-There are three types of prompts, all using a common CSV template:
+---
 
-### Template	Focus	Policy Alignment
-🧱 Policy-Specific	Questions directly from internal policies	✅ Y
-🌐 General Security	Awareness topics like phishing, passwords, safe browsing	❌ N
-⚙️ Advanced Topics	Technical security: secure coding, OWASP, cryptography	❌ N
+## 🛠 Technology Stack
 
-Important: Even though the prompts differ, they all use the same CSV format, ensuring consistent output.
+| Component | Detail |
+| :--- | :--- |
+| **Project Name** | `security-training-uplift` |
+| **Runtime** | Node.js (v18+) |
+| **Language** | TypeScript |
+| **AI Model** | Google Gemini API (`gemini-2.5-pro`) |
+| **Key Utilities** | `pdf2json`, `papaparse` |
 
-## Generation
+---
 
-Each prompt produces exactly 5 high-quality questions per run.
+## 🚀 Getting Started
 
-Questions are clear, self-contained, and professional.
+### 1. Prerequisites
 
-Policy-Specific questions include direct references and explanations from the policy text.
+* Node.js (v18+)
+* A **Gemini API Key** from Google AI Studio.
 
-Question types are diverse: Scenario, Multiple Choice, True/False, Spot the Mistake, Mini-Story, Ordering, Ethical Dilemma, Hotspot/Image-Based, etc.
+### 2. Setup
 
-## Output
-
-Separate CSV files are generated for each template:
-
-Policy-Specific → output/[POLICY_NAME].csv
-
-General Security → output/general.csv
-
-Advanced Topics → output/advanced.csv
-
-All files can be merged into a final CSV: output/final_generated_questions.csv for easy review.
-
-## Consistency & Scalability
-
-All templates follow the same CSV schema, ensuring uniformity.
-
-The setup allows the team to automate quiz generation, maintain structured outputs, and scale easily across multiple policies or topics.
-
-# 🚀 Getting Started
-
-## 1. Prerequisites
-Node.js (v18+)
-
-## 2. Setup
+```bash
+# Clone the repository
 git clone [YOUR_REPO_URL]
-
-cd [REPO_NAME]
-
+cd security-training-uplift
 npm install
+```
 
-## 3. Configuration
-Create a .env file in the root directory and add your API key:
+### 3. Configuration
+1. **API Key:** Create a ```.env``` file in the root directory.
 
-### Code snippet
-#### .env file
+2. **Edit** ```.env```: Add your actual API key.
+
+```# .env
 GEMINI_API_KEY="YOUR_GEMINI_API_KEY_HERE"
+```
 
-## 4. Run
-Place your policy files in the policies/ directory, then run the pipeline:
+### 4. Input & Run
+1, **Input Policies**: Place your security policy documents (```.pdf``` or ```.txt```) into the ```policies/``` directory.
+
+2, ***Execute the Pipeline***:
+```
 npm run generate
+```
 
-## 📂 Output
-The final merged quiz is saved as output/final_generated_questions.csv.
+## 📂 Output Structure
+The generation script creates the following organized folder structure inside ```output/```:
+
+**Directory Structure**
+
+| Component | Detail |
+| :--- | :--- |
+| **Final Merged CSV(Evals/Review)** |	output/csv/security_awareness_questions.csv |
+| **General Questions(e.g., Phishing)** | output/csv/security_awareness_general_questions.csv |
+| **Advanced Questions(e.g., OWASP)** |	output/csv/security_awareness_advanced_questions.csv |
+| **Policy Questions(Individual policy questions)** | output/csv/[POLICY_NAME]_policy_questions.csv |
+| **Final Moodle GIFT Import File(GIFT format)** | output/gift/security_awareness_questions.txt |
+
+**File Usage**
+
+| File Path | Purpose | Format |
+| :--- | :--- | :--- |
+| **output/csv/*.csv** | Used by the Security/Training team for evaluation, review, and reporting. | ```CSV```
+| **output/gift/*.txt** | Uploaded directly to Moodle or a compatible LMS for course deployment. | ```GIFT (as .txt)```
