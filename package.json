@@ -1,31 +1,20 @@
 {
-  "name": "security-awareness-quiz-using-prompt",
+  "name": "security-training-uplift",
   "version": "1.0.0",
   "type": "module",
   "main": "index.js",
   "scripts": {
     "start": "node src/main.js",
     "generate": "npx tsx src/main.ts",
-    "clean": "rm -rf output/*",
+    "clean": "rm -rf output/csv output/gift",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/indira-everest/security-awareness-quiz-using-prompt.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/indira-everest/security-awareness-quiz-using-prompt/issues"
-  },
-  "homepage": "https://github.com/indira-everest/security-awareness-quiz-using-prompt#readme",
+    "license": "ISC",
   "description": "",
   "dependencies": {
     "@google/genai": "^1.25.0",
     "dotenv": "^17.2.3",
-    "openai": "^6.4.0",
     "papaparse": "^5.5.3",
     "pdf2json": "^4.0.0"
   },

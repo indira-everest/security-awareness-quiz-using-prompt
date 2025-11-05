@@ -9,16 +9,29 @@ import { generateQuestions } from "./utils/generateQuestions.js";
 import {
   getGeneralSecurityPrompt,
   getAdvancedTopicsPrompt,
-  getNarrativeSpecificPrompt,
+  getSinglePolicyQuestionPrompt,
 } from "./promptTemplates.js";
 import { withRetry } from "./utils/retryUtils.js";
 import { writeGiftFile } from "./utils/convertCsvToGiftUtils.js";
 
 const inputDir = path.resolve("policies");
 const outputDir = path.resolve("output");
-const finalCsvPath = path.join(outputDir, "final_generated_questions.csv");
+
+const csvOutputDir = path.join(outputDir, "csv");
+const giftOutputDir = path.join(outputDir, "gift");
+
+const finalCsvPath = path.join(
+  csvOutputDir,
+  "security_awareness_questions.csv"
+);
+const finalGiftPath = path.join(
+  giftOutputDir,
+  "security_awareness_questions.txt"
+);
 
 ensureDir(outputDir);
+ensureDir(csvOutputDir);
+ensureDir(giftOutputDir);
 
 /**
  * Generate quiz questions for a single section (e.g., general, advanced)
@@ -26,15 +39,13 @@ ensureDir(outputDir);
 async function generateSection(
   label: string,
   promptFn: () => string,
-  outputFile: string,
+  outputFileName: string,
   skipHeader = false
 ) {
   const csv = await withRetry(generateQuestions, [
     promptFn(),
-    path.join(outputDir, outputFile),
+    path.join(csvOutputDir, outputFileName),
   ]);
-
-  console.log(`${label} section done → ${outputFile}`);
   return skipHeader ? csv.split("\n").slice(1).join("\n") : csv;
 }
 
@@ -49,12 +60,11 @@ async function generatePolicySections() {
     const policyPath = path.join(inputDir, file);
     const policyName = file.replace(/\.(pdf|txt)$/i, "");
 
-    console.log(`Processing policy: ${policyName}`);
     const policyText = await readFileContent(policyPath);
-    const policyPrompt = getNarrativeSpecificPrompt(policyText, policyName);
+    const policyPrompt = getSinglePolicyQuestionPrompt(policyText, policyName);
     const csv = await withRetry(generateQuestions, [
       policyPrompt,
-      path.join(outputDir, `${policyName}_Narrative.csv`),
+      path.join(csvOutputDir, `${policyName}_policy_questions.csv`),
     ]);
 
     // skip header lines to avoid duplicates
@@ -73,13 +83,13 @@ async function main() {
   const generalCsv = await generateSection(
     "General Security",
     getGeneralSecurityPrompt,
-    "general.csv"
+    "security_awareness_general_questions.csv"
   );
 
   const advancedCsv = await generateSection(
     "Advanced Topics",
     getAdvancedTopicsPrompt,
-    "advanced.csv",
+    "security_awareness_advanced_questions.csv",
     true
   );
 
@@ -87,9 +97,11 @@ async function main() {
 
   const finalCsv = [generalCsv, advancedCsv, policyCsv].join("\n");
   writeFile(finalCsvPath, finalCsv);
-  writeGiftFile(finalCsvPath, outputDir);
+  writeGiftFile(finalCsvPath, finalGiftPath);
 
-  console.log(`\n All sections generated successfully → ${finalCsvPath}\n`);
+  console.log(`\n✅ Pipeline complete: 
+    CSV Master file: ${finalCsvPath}
+    Moodle GIFT file: ${finalGiftPath}\n`);
 }
 
 main().catch((err) => {

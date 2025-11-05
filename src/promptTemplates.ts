@@ -41,7 +41,8 @@ const ORG_CHARACTERS = `
 - **Ranga (CTO)**: Technical architecture, system design.
 - **Jasmine (Security Lead)**: Policy enforcement, incident guidance.
 - **Chris (AI Lead)**: Data handling for ML models, new technology risk.
-- **Ashok, Rav, Sudhakar, Shruthi, Tom, Bruce (Project Managers)**: Project timelines, resource access, team adherence.
+- **Ashok, Rav, Sudhakar, Shruthi, Tom, Bruce, Simon (Project Managers)**: Project timelines, resource access, team adherence.
+- **Dan** - Director of coaching and learning.
 - **General roles to use**: Sales Rep, Developer, HR Specialist, Intern.
 `;
 
@@ -70,8 +71,8 @@ ${policyText}
 - **Naming:** The question text **MUST** explicitly mention the organization name **"Everest"** and the **Policy Name** provided above.
 - **Character Use:** The scenario **MUST** include at least **one** of the following organizational characters: ${ORG_CHARACTERS}
 - **Strict Compliance:** The content, answer, and explanation **EXCLUSIVELY** must come from the 'POLICY TEXT'.
+- **Fun factor:** It should feel like a real workplace moment — not an exam question.
 - **Policy Alignment:** The "Policy Alignment (Y/N)" column **MUST** be set to **'Y'**.
-
 ${CSV_COLUMNS_AND_FORMAT}
 `;
 }
@@ -117,14 +118,4 @@ Your task is to generate **exactly 3 unique, high-quality quiz questions** for t
 
 ${CSV_COLUMNS_AND_FORMAT}
 `;
-}
-
-// ----------------------------------------------------------------------
-// TEMPLATE 4: (DEPRECATED/REPLACED by getSinglePolicyQuestionPrompt)
-// ----------------------------------------------------------------------
-export function getNarrativeSpecificPrompt(
-  policyText: string,
-  policyName: string
-): string {
-  return getSinglePolicyQuestionPrompt(policyText, policyName);
 }

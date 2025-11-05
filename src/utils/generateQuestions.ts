@@ -9,8 +9,6 @@ export async function generateQuestions(
   prompt: string,
   outputPath: string
 ): Promise<string> {
-  console.log(`Generating questions for: ${outputPath} using ${MODEL_NAME}`);
-
   try {
     const response = await ai.models.generateContent({
       model: MODEL_NAME,
