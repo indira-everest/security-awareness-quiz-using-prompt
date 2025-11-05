@@ -64,5 +64,4 @@ export function getPolicyFiles(dir: string): string[] {
  */
 export function writeFile(filePath: string, content: string): void {
   fs.writeFileSync(filePath, content, "utf8");
-  console.log(`✅ Saved file: ${filePath}`);
 }

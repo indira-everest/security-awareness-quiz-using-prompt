@@ -33,8 +33,6 @@ async function generateSection(
     promptFn(),
     path.join(outputDir, outputFile),
   ]);
-
-  console.log(`${label} section done → ${outputFile}`);
   return skipHeader ? csv.split("\n").slice(1).join("\n") : csv;
 }
 
@@ -49,7 +47,6 @@ async function generatePolicySections() {
     const policyPath = path.join(inputDir, file);
     const policyName = file.replace(/\.(pdf|txt)$/i, "");
 
-    console.log(`Processing policy: ${policyName}`);
     const policyText = await readFileContent(policyPath);
     const policyPrompt = getNarrativeSpecificPrompt(policyText, policyName);
     const csv = await withRetry(generateQuestions, [
