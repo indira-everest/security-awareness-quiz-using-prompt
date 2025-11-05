@@ -1,5 +1,4 @@
 import fs from "fs";
-import path from "path";
 import Papa from "papaparse";
 
 /**
@@ -78,9 +77,8 @@ export function convertCsvToGift(csvContent: string): string {
 /**
  * Reads a final CSV and writes a `.gift` file alongside it.
  */
-export function writeGiftFile(finalCsvPath: string, outputDir: string): void {
+export function writeGiftFile(finalCsvPath: string, giftPath: string): void { 
   const csvContent = fs.readFileSync(finalCsvPath, "utf8");
   const giftContent = convertCsvToGift(csvContent);
-  const giftPath = path.join(outputDir, "final_generated_questions.txt");
   fs.writeFileSync(giftPath, giftContent, "utf8");
 }
